@@ -6,7 +6,18 @@ from email.mime.multipart import MIMEMultipart
 email = "gabescottaws@gmail.com"
 pas = "Gamecubekingaws"
 
-sms_gateway = sys.argv[1]
+username = sys.argv[1].lower()
+message = sys.argv[2]
+sms_gateway = ""
+
+
+allusers = open("users.txt",  "r")
+for user in allusers.readlines():
+    userparts = user.split(" ")
+    if username == userparts[0]:
+        sms_gateway = userparts[1]
+
+
 # The server we use to send emails in our case it will be gmail but every email provider has a different smtp 
 # and port is also provided by the email provider.
 smtp = "smtp.gmail.com" 
@@ -30,7 +41,7 @@ msg.attach(MIMEText(body, 'plain'))
 
 sms = msg.as_string()
 
-server.sendmail(email,sms_gateway, sys.argv[2])
+server.sendmail(email,sms_gateway, message)
 
 # lastly quit the server
 server.quit()
